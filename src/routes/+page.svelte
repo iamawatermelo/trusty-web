@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Snippet } from 'svelte';
+	import { type Snippet } from 'svelte';
 
     
 </script>
@@ -112,96 +112,123 @@
                     
                     <!-- Realtime -->
                     <th scope="col">Arrival</th>
-                    <th scope="col" class="timetable-border">Departure</th>
+                    <th scope="col" class="departure timetable-border">Departure</th>
                 </tr>
             </thead>
             <tbody>
-                {#snippet timetableEntry(
+                {#snippet timetableEntry(props: {
                     name: string,
-                    platform: string,
-                    arrivalTtTime: string,
-                    arrivalWttTime: string,
-                    departureTtTime: string,
-                    departureWttTime: string,
-                    arrivalRtTime: string,
-                    departureRtTime: string,
-                    path: string,
-                    line: string,
-                    markerSnippet: Snippet
-                )}
+                    crs?: string,
+                    platform?: string,
+                    arrivalTtTime?: string,
+                    arrivalWttTime?: string,
+                    departureTtTime?: string,
+                    departureWttTime?: string,
+                    arrivalRtTime?: string,
+                    departureRtTime?: string,
+                    path?: string,
+                    line?: string,
+                    markerSnippet?: Snippet
+                })}
                 <tr class="timetable-entry-detail">
                     <!-- Location -->
-                    <td>{@render marker("HHD", "marker-crs")}</td>
+                    <td>
+                        {#if props.crs}
+                            {@render marker(crs, "marker-crs")}
+                        {/if}
+                    </td>
                     <td class="timetable-location">
                         <p>
-                            {name}
+                            {props.name}
                         </p>
-                        {#if markerSnippet}
-                            {@render markerSnippet()}
+                        {#if props.markerSnippet}
+                            <div class="timetable-detail">
+                                {@render props.markerSnippet()}
+                            </div>
                         {/if}
                     </td>
-                    <td class="timetable-border platform">{platform}</td>
+                    <td class="timetable-border platform">{props.platform}</td>
                     
                     <!-- Timetable -->
-                    <td class="arrival time">{arrivalTtTime}</td>
+                    <td class="arrival time">{props.arrivalTtTime || "-"}</td>
                     <td class="wtt time">
-                        {#if arrivalWttTime != arrivalTtTime}
-                            {arrivalWttTime}
+                        {#if props.arrivalWttTime != props.arrivalTtTime}
+                            {props.arrivalWttTime}
                         {/if}
                     </td>
-                    <td class="time">{departureTtTime}</td>
+                    <td class="time">{props.departureTtTime || "-"}</td>
                     <td class="wtt time timetable-border">
-                        {#if departureWttTime != departureTtTime}
-                            {departureWttTime}
+                        {#if props.departureWttTime != props.departureTtTime}
+                            {props.departureWttTime}
                         {/if}
                     </td>
                     
                     <!-- Realtime -->
-                    <td class="time">{arrivalRtTime}</td>
-                    <td class="time timetable-border">{departureRtTime}</td>
+                    <td class="time">{props.arrivalRtTime}</td>
+                    <td class="time timetable-border">{props.departureRtTime}</td>
                     
                     <!-- Path/Line -->
-                    <td></td>
-                    <td></td>
+                    <td>{props.path}</td>
+                    <td>{props.line}</td>
                 </tr>
                 {/snippet}
                 
-                {@render timetableEntry(
-                  
-                )}
+                {#snippet timetableDetailPathedAs()}
+                    <div class="marker-related">
+                        {@render marker("D", "marker-load")}
+                        {@render marker("90", "marker-load-alt", "on-marker-load")}
+                    </div>
+                    <p>Pathed as Class 158, 168, 170 or 175 DMU at 90mph</p>
+                {/snippet}
+                
+                {@render timetableEntry({
+                  name: "Holyhead",
+                  platform: "2",
+                  departureTtTime: "15:36",
+                  departureWttTime: "15:36",
+                  markerSnippet: timetableDetailPathedAs
+                })}
+                
+                {#snippet timetableDetailUnadvertised()}
+                    {@render marker("N", "marker-unadvertised-stop")}
+                    <p>Unadvertised stop</p>
+                {/snippet}
+                
+                {@render timetableEntry({
+                  name: "Valley",
+                  arrivalWttTime: "15:41½",
+                  departureWttTime: "15:42½",
+                  markerSnippet: timetableDetailUnadvertised
+                })}
+                
+                {#snippet timetableDetailRequestStop()}
+                    {@render marker("R", "marker-request-stop")}
+                    <p>Request stop</p>
+                {/snippet}
+                
+                {@render timetableEntry({
+                  name: "Ty Croes",
+                  arrivalTtTime: "15:48",
+                  arrivalWttTime: "15:47½",
+                  departureTtTime: "15:48",
+                  departureWttTime: "15:48",
+                  markerSnippet: timetableDetailRequestStop
+                })}
+                
+                {@render timetableEntry({
+                  name: "Bodorgan",
+                  arrivalTtTime: "15:56",
+                  arrivalWttTime: "15:56",
+                  departureTtTime: "15:56",
+                  departureWttTime: "15:56½",
+                  markerSnippet: timetableDetailRequestStop
+                })}
             </tbody>
         </table>
     </article>
 </main>
 
 <style>
-    /* Marker styles */
-    
-    .marker {
-        font-family: "Trusty Mono", monospace;
-        font-weight: 700;
-        padding: 0 0.25em;
-        line-height: 140%;
-        width: min-content;
-        height: min-content;
-        user-select: none;
-    }
-    
-    .markers, .marker-group, .marker-related {
-        display: flex;
-        flex-direction: row;
-        gap: 0.5em;
-    }
-    
-    .marker-group {
-        gap: 0.25em;
-    }
-    
-    .marker-related {
-        display: inline-flex;
-        gap: 0
-    }
-    
     main {
         display: flex;
         flex-direction: row;
@@ -284,6 +311,33 @@
         }
     }
     
+    /* Marker styles */
+    
+    .marker {
+        font-family: "Trusty Mono", monospace;
+        font-weight: 700;
+        padding: 0 0.25em;
+        line-height: 120%;
+        width: min-content;
+        height: min-content;
+        user-select: none;
+    }
+    
+    .markers, .marker-group, .marker-related {
+        display: flex;
+        flex-direction: row;
+        gap: 0.5em;
+    }
+    
+    .marker-group {
+        gap: 0.25em;
+    }
+    
+    .marker-related {
+        display: inline-flex;
+        gap: 0
+    }
+    
     /* Timetable styles */
     
     /* Border and padding */
@@ -300,7 +354,7 @@
         }
     }
     
-    table, td, th {
+    table, td, th, thead {
         border: 0 solid var(--card-stroke);
         border-collapse: collapse;
     }
@@ -310,7 +364,6 @@
     }
     
     td {
-        border-top-width: 1px;
         border-bottom-width: 1px;
     }
     
@@ -328,6 +381,10 @@
         &.timetable, &.realtime {
             font-weight: 600;
         }
+    }
+    
+    thead {
+        border-bottom-width: 1px;
     }
     
     /* Give the first and last cells more padding, because we didn't add
@@ -348,7 +405,7 @@
         font-family: "Trusty Mono", monospace;
         font-weight: 600;
         
-        text-align: center;
+        text-align: left;
         
         &.wtt {
             font-weight: 300;
@@ -357,6 +414,14 @@
     
     th.wtt {
         font-weight: 300;
+        text-align: right;
+    }
+    
+    th.departure {
+        display: flex;
+        flex-direction: row;
+        justify-content: end;
+        
         text-align: right;
     }
     
@@ -373,8 +438,8 @@
             [tt-arrival-wtt] 4em
             [tt-departure] 4em
             [tt-departure-wtt] 4em
-            [rt-arrival] min-content
-            [rt-departure] min-content
+            [rt-arrival] 4em
+            [rt-departure] 4em
             [path] min-content
             [line] min-content;
     }
@@ -455,6 +520,7 @@
         .timetable-detail {
             display: flex;
             flex-direction: row;
+            flex-wrap: wrap;
             gap: 0.25em;
             
             padding-top: 0.25rem;
@@ -462,7 +528,10 @@
             grid-row: 2;
             grid-column: span 2;
             
-            font-size: 0.8em;
+            text-transform: uppercase;
+            font-size: 0.6em;
+            font-weight: 600;
+            opacity: 0.6
         }
     }
     
@@ -473,6 +542,7 @@
         grid-template-columns: subgrid;
         
         & > p {
+            font-size: 0.8em;
             font-weight: 500;
         }
     }

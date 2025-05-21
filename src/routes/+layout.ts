@@ -4,6 +4,8 @@ export async function load() {
     "fg": "340909",
     "card-bg": "F8F0EA",
     "card-stroke": "EED4C0",
+    
+    // Marker tokens
     "marker-headcode": "AD8128",
     "on-marker-headcode": "FAF6ED",
     "marker-schedule": "AD2878",
@@ -22,9 +24,15 @@ export async function load() {
     "marker-catering": "0B1E5A",
     "marker-catering-alt": "0E193A",
     "on-marker-catering": "F2F4F9",
+    
+    // Timetable tokens
     "marker-crs": "383E51",
     "marker-crs-alt": "6E7BA5",
-    "on-marker-crs": "EFF0F2"
+    "on-marker-crs": "EFF0F2",
+    "marker-unadvertised-stop": "AD286D",
+    "on-marker-unadvertised-stop": "FCEEF5",
+    "marker-request-stop": "911AA9",
+    "on-marker-request-stop": "FBF3FC"
   };
   
   let cssVariables = '';
