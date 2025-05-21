@@ -1,0 +1,32 @@
+@font-face {
+    font-family: "Trusty Sans";
+    src:
+        local("Instrument Sans"),
+        url("$lib/sans.ttf");
+}
+
+@font-face {
+    font-family: "Trusty Mono";
+    src:
+        local("JetBrains Mono"),
+        url("$lib/mono.ttf");
+}
+
+html {
+    font-family: "Trusty Sans", system-ui, sans-serif;
+}
+
+code, .code {
+    font-family: "Trusty Mono", monospace;
+}
+
+/* CSS reset */
+
+* {
+    padding: 0;
+    margin: 0;
+}
+
+ul, ol {
+    list-style-type: none;
+}
