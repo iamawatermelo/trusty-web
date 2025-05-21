@@ -21,7 +21,10 @@ export async function load() {
     "on-marker-reservations": "F2F4F9",
     "marker-catering": "0B1E5A",
     "marker-catering-alt": "0E193A",
-    "on-marker-catering": "F2F4F9"
+    "on-marker-catering": "F2F4F9",
+    "marker-crs": "383E51",
+    "marker-crs-alt": "6E7BA5",
+    "on-marker-crs": "EFF0F2"
   };
   
   let cssVariables = '';

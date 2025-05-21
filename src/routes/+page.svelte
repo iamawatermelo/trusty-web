@@ -77,7 +77,7 @@
         </section>
     </div>
     
-    <section>
+    <article>
         <h2>Timetable</h2>
         <table>
             <colgroup>
@@ -90,47 +90,68 @@
             </colgroup>
             <thead>
                 <tr>
-                    <th scope="col" rowspan="2">CRS</th>
-                    <th scope="col" rowspan="2">Location</th>
-                    <th scope="col" rowspan="2">Platform</th>
-                    <th scope="col" colspan="4">Timetable</th>
-                    <th scope="col" colspan="2">Realtime</th>
-                    <th scope="col" rowspan="2">Path</th>
-                    <th scope="col" rowspan="2">Line</th>
+                    <th scope="col" rowspan="2" class="crs timetable-header-start">CRS</th>
+                    <th scope="col" rowspan="2" class="location">Location</th>
+                    <th scope="col" rowspan="2" class="platform timetable-border">Platform</th>
+                    
+                    <th scope="col" colspan="4" class="timetable timetable-border">Timetable</th>
+                    
+                    <th scope="col" colspan="2" class="realtime timetable-border">Realtime</th>
+                    
+                    <th scope="col" rowspan="2" class="path">Path</th>
+                    <th scope="col" rowspan="2" class="line timetable-header-end">Line</th>
                 </tr>
                 <tr>
+                    <!-- Timetable -->
                     <th scope="col">Arrival</th>
                     <th scope="col">WTT</th>
                     <th scope="col">Departure</th>
-                    <th scope="col">WTT</th>
+                    <th scope="col" class="timetable-border">WTT</th>
+                    
+                    <!-- Realtime -->
                     <th scope="col">Arrival</th>
-                    <th scope="col">Departure</th>
+                    <th scope="col" class="timetable-border">Departure</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td>HHD</td>
+                    <!-- Location -->
+                    <td>{@render marker("HHD", "marker-crs")}</td>
                     <td>
-                        <p>
-                            Holyhead
-                        </p>
-                        <p>
-                            Pathed as Class 158/168/170/175 DMU at 90mph
-                        </p>
+                        <div class="timetable-location">
+                            <p>
+                                Holyhead
+                            </p>
+                            <div class="timetable-extra">
+                                <div class="marker-related">
+                                    {@render marker("80x", "marker-load")}
+                                    {@render marker("125", "marker-load-alt", "on-marker-load")}
+                                </div>
+                                <p>
+                                    Pathed as a Class 80x at 125mph
+                                </p>
+                            </div>
+                        </div>
                     </td>
-                    <td>2</td>
+                    <td class="timetable-border">2</td>
+                    
+                    <!-- Timetable -->
                     <td></td>
                     <td></td>
                     <td>15:36</td>
+                    <td class="timetable-border"></td>
+                    
+                    <!-- Realtime -->
                     <td></td>
-                    <td></td>
-                    <td>15:36</td>
+                    <td class="timetable-border">15:36</td>
+                    
+                    <!-- Path/Line -->
                     <td></td>
                     <td></td>
                 </tr>
             </tbody>
         </table>
-    </section>
+    </article>
 </main>
 
 <style>
@@ -240,5 +261,112 @@
                 }
             }
         }
+    }
+    
+    /* Timetable styles */
+    
+    /* Layout */
+    
+    article {
+        background: var(--card-bg);
+        
+        border: 1px solid var(--card-stroke);
+        border-collapse: collapse;
+        
+        h2 {
+            font-size: 1rem;
+            padding: 1rem;
+        }
+    }
+    
+    table {
+        display: grid;
+        
+        grid-auto-rows: min-content;
+        grid-template-columns:
+            [crs] min-content
+            [location] auto
+            [platform] 1em
+            [tt-arrival] min-content
+            [tt-arrival-wtt] min-content
+            [tt-departure] min-content
+            [tt-departure-wtt] min-content
+            [rt-arrival] min-content
+            [rt-departure] min-content
+            [path] min-content
+            [line] min-content
+    }
+    
+    thead, tbody, tr {
+        display: grid;
+        
+        grid-auto-rows: min-content;
+        grid-column: 1 / -1;
+        grid-template-columns: subgrid;
+    }
+    
+    thead {
+        grid-template-rows: repeat(2, min-content);
+    }
+    
+    tr {
+        grid-template-rows: repeat(2, min-content);
+        grid-row: 1 / span 2;
+    }
+    
+    thead tr:first-child {
+        .crs, .location, .platform, .path, .line {
+            grid-row: 1 / span 2;
+        }
+        
+        .timetable {
+            grid-column: span 4;
+        }
+    }
+    
+    table, td, th {
+        border: 0 solid var(--card-stroke);
+    }
+    
+    table, td {
+        border-collapse: collapse;
+        border-top-width: 1px;
+        border-bottom-width: 1px;
+    }
+    
+    th, td {
+        padding: 0.25em 0.5em;
+        
+        
+        &.timetable-border {
+            border-right-width: 1px;
+        }
+    }
+    
+    td:first-child, .timetable-header-start {
+        padding-left: 1em;
+    }
+    
+    th {
+        vertical-align: bottom;
+        text-align: left;
+    }
+    
+    /* Detail */ 
+    
+    .timetable-extra {
+        font-size: 0.8em;
+        
+        display: flex;
+        flex-direction: row;
+        gap: 0.25em;
+    }
+    
+    .timetable-location {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25em;
+        
+        column-span: 2;
     }
 </style>
