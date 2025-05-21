@@ -8,7 +8,7 @@
             srcset="trusty-black.svg"
             media="(prefers-color-scheme: light), (prefers-color-scheme: no-preference)"
         />
-        <img src="trusty-white.svg" alt="Trusty logo" />
+        <img src="trusty-white.svg" height="32" alt="Trusty logo" />
     </picture>
 </h1>
 
