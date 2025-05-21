@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { Snippet } from 'svelte';
+
     
 </script>
 
@@ -114,39 +116,59 @@
                 </tr>
             </thead>
             <tbody>
+                {#snippet timetableEntry(
+                    name: string,
+                    platform: string,
+                    arrivalTtTime: string,
+                    arrivalWttTime: string,
+                    departureTtTime: string,
+                    departureWttTime: string,
+                    arrivalRtTime: string,
+                    departureRtTime: string,
+                    path: string,
+                    line: string,
+                    markerSnippet: Snippet
+                )}
                 <tr class="timetable-entry-detail">
                     <!-- Location -->
                     <td>{@render marker("HHD", "marker-crs")}</td>
                     <td class="timetable-location">
                         <p>
-                            Holyhead
+                            {name}
                         </p>
-                        <div class="timetable-detail">
-                            <div class="marker-related">
-                                {@render marker("80x", "marker-load")}
-                                {@render marker("125", "marker-load-alt", "on-marker-load")}
-                            </div>
-                            <p>
-                                Pathed as a Class 80x at 125mph
-                            </p>
-                        </div>
+                        {#if markerSnippet}
+                            {@render markerSnippet()}
+                        {/if}
                     </td>
-                    <td class="timetable-border platform">2</td>
+                    <td class="timetable-border platform">{platform}</td>
                     
                     <!-- Timetable -->
-                    <td class="arrival time"></td>
-                    <td class="wtt time"></td>
-                    <td class="time">15:36</td>
-                    <td class="wtt time timetable-border">15:36</td>
+                    <td class="arrival time">{arrivalTtTime}</td>
+                    <td class="wtt time">
+                        {#if arrivalWttTime != arrivalTtTime}
+                            {arrivalWttTime}
+                        {/if}
+                    </td>
+                    <td class="time">{departureTtTime}</td>
+                    <td class="wtt time timetable-border">
+                        {#if departureWttTime != departureTtTime}
+                            {departureWttTime}
+                        {/if}
+                    </td>
                     
                     <!-- Realtime -->
-                    <td class="time"></td>
-                    <td class="time timetable-border">15:36</td>
+                    <td class="time">{arrivalRtTime}</td>
+                    <td class="time timetable-border">{departureRtTime}</td>
                     
                     <!-- Path/Line -->
                     <td></td>
                     <td></td>
                 </tr>
+                {/snippet}
+                
+                {@render timetableEntry(
+                  
+                )}
             </tbody>
         </table>
     </article>
