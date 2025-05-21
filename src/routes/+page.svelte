@@ -108,12 +108,12 @@
                     <!-- Timetable -->
                     <th scope="col">Arrival</th>
                     <th scope="col" class="wtt">WTT</th>
-                    <th scope="col">Departure</th>
-                    <th scope="col" class="wtt timetable-border">WTT</th>
+                    <th scope="col" class="departure-tt">Departure</th>
+                    <th scope="col" class="departure-wtt wtt timetable-border">WTT</th>
                     
                     <!-- Realtime -->
                     <th scope="col">Arrival</th>
-                    <th scope="col" class="departure timetable-border">Departure</th>
+                    <th scope="col" class="departure departure-rt timetable-border">Departure</th>
                 </tr>
             </thead>
             <tbody>
@@ -152,22 +152,22 @@
                     <td class="timetable-border platform">{props.platform}</td>
                     
                     <!-- Timetable -->
-                    <td class="arrival time">{props.arrivalTtTime || "-"}</td>
-                    <td class="wtt time">
+                    <td class="arrival time arrival-tt">{props.arrivalTtTime || "-"}</td>
+                    <td class="wtt time arrival-wtt">
                         {#if props.arrivalWttTime != props.arrivalTtTime}
                             {props.arrivalWttTime}
                         {/if}
                     </td>
-                    <td class="time">{props.departureTtTime || "-"}</td>
-                    <td class="wtt time timetable-border">
+                    <td class="time departure-tt">{props.departureTtTime || "-"}</td>
+                    <td class="wtt time timetable-border departure-wtt">
                         {#if props.departureWttTime != props.departureTtTime}
                             {props.departureWttTime}
                         {/if}
                     </td>
                     
                     <!-- Realtime -->
-                    <td class="time">{props.arrivalRtTime}</td>
-                    <td class="time timetable-border">{props.departureRtTime}</td>
+                    <td class="time arrival-rt">{props.arrivalRtTime}</td>
+                    <td class="time timetable-border departure-rt">{props.departureRtTime}</td>
                     
                     <!-- Path/Line -->
                     <td>{props.path}</td>
@@ -264,6 +264,11 @@
 </div>
 
 <style>
+    .main-container {
+        container-name: main;
+        container-type: inline-size;
+    }
+    
     main {
         display: flex;
         flex-direction: row;
@@ -271,16 +276,13 @@
         gap: 2rem;
         
         padding: 4rem 2rem;
-    }
-    
-    .main-container {
-        container-name: main;
-        container-type: inline-size;
-    }
-    
-    @container main (max-width: 64rem) {
-        main {
+        
+        @container main (max-width: 64rem) {
             flex-direction: column;
+        }
+        
+        @container main (max-width: 32rem) {
+            padding: 2rem 1rem;
         }
     }
     
@@ -567,6 +569,36 @@
     th {
         vertical-align: bottom;
         text-align: left;
+    }
+    
+    /*  Okay, this is the worst thing I've ever done. 
+        I want to turn this: 
+        
+            [arrival tt] [arrival wtt] [departure tt] [departure wtt]
+        
+        Into this: 
+        
+            [arrival tt] [arrival wtt]
+            [departure tt] [departure wtt]
+        
+        Wish me luck. */
+    
+    @container main (max-width: 64rem) {
+        table {
+            grid-template-columns:
+                [crs] min-content
+                [location] auto
+                [platform] min-content
+                [tt] 4em
+                [tt-wtt] 4em
+                [rt] 4em
+                [path] min-content
+                [line] min-content;
+        }
+        
+        thead {
+            grid-template-rows: repeat(3, calc(1lh + 0.5rem));
+        }
     }
     
     /* Detail */ 
