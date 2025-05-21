@@ -54,28 +54,28 @@
                     </div>
                     Pathed as Class 158/168/170/175 DMU at 90mph
                 </li>
-                <div class="services">
-                    <li>{@render marker("B", "marker-accomodation")} Standard class only</li>
-                    <li>{@render marker("A", "marker-reservations")} Reservations available</li>
-                    <li>{@render marker("T", "marker-catering")} Trolley service available</li>
-                </div>
+            </ul>
+            <ul class="marker-definitions services">
+                <li>{@render marker("B", "marker-accomodation")} Standard class only</li>
+                <li>{@render marker("A", "marker-reservations")} Reservations available</li>
+                <li>{@render marker("T", "marker-catering")} Trolley service available</li>
             </ul>
         </section>
             
         <section>
             <h2>Tracking information</h2>
-            <ul>
-                <div class="tracking-codes">
+            <div class="tracking-codes">
+                <ul>
                     <li>TRUST ID <code>401I26MR19</code></li>
                     <li>Activated at <span>19 May 2025 14:36</span></li>
-                </div>
-                <div class="tracking-codes">
+                </ul>
+                <ul class="tracking-codes">
                     <li>UID <code>G55730</code></li>
                     <li>Identity <code>1I26</code></li>
                     <li>TSC <code>22340000</code></li>
                     <li>Headcode <code>3061</code></li>
-                </div>
-            </ul>
+                </ul>
+            </div>
         </section>
     </div>
     
@@ -119,6 +119,7 @@
                 {#snippet timetableEntry(props: {
                     name: string,
                     crs?: string,
+                    pass?: boolean,
                     platform?: string,
                     arrivalTtTime?: string,
                     arrivalWttTime?: string,
@@ -130,11 +131,11 @@
                     line?: string,
                     markerSnippet?: Snippet
                 })}
-                <tr class="timetable-entry-detail">
+                <tr class="timetable-entry-detail" class:pass={props.pass}>
                     <!-- Location -->
                     <td>
                         {#if props.crs}
-                            {@render marker(crs, "marker-crs")}
+                            {@render marker(props.crs, "marker-crs")}
                         {/if}
                     </td>
                     <td class="timetable-location">
@@ -223,6 +224,37 @@
                   departureWttTime: "15:56½",
                   markerSnippet: timetableDetailRequestStop
                 })}
+                
+                @render timetableEntry({ name: "Holyhead", crs: "HHD", platform: "2", departureTtTime: "15:36", departureWttTime: "15:36", departureRtTime: "15:36" })
+                @render timetableEntry({ name: "Valley", crs: "VAL", arrivalTtTime: "15:41", arrivalWttTime: "15:41", departureTtTime: "15:42", departureWttTime: "15:42" })
+                @render timetableEntry({ name: "Ty Croes", crs: "TYC", arrivalTtTime: "15:48", arrivalWttTime: "15:47", departureTtTime: "15:48", departureWttTime: "15:48" })
+                @render timetableEntry({ name: "Bodorgan", crs: "BOR", arrivalTtTime: "15:56", arrivalWttTime: "15:56", departureTtTime: "15:56", departureWttTime: "15:56½" })
+                @render timetableEntry({ name: "Gaerwen", arrivalWttTime: "16:03", pass: true, arrivalRtTime: "16:01" })
+                @render timetableEntry({ name: "Llanfairpwll", crs: "LPG", arrivalTtTime: "16:06", arrivalWttTime: "16:06", departureTtTime: "16:07", departureWttTime: "16:07", arrivalRtTime: "16:05", departureRtTime: "16:07" })
+                @render timetableEntry({ name: "Menai Bridge", arrivalWttTime: "16:10", pass: true })
+                @render timetableEntry({ name: "Bangor (Gwynedd)", crs: "BNG", platform: "1", arrivalTtTime: "16:15", arrivalWttTime: "16:13½", departureTtTime: "16:15", departureWttTime: "16:15", arrivalRtTime: "16:12", departureRtTime: "16:15" })
+                @render timetableEntry({ name: "Aber Ground Frame", arrivalWttTime: "16:20½", pass: true })
+                @render timetableEntry({ name: "Llanfairfechan", crs: "LLF", arrivalTtTime: "16:23", arrivalWttTime: "16:23", departureTtTime: "16:24", departureWttTime: "16:24", arrivalRtTime: "16:23", departureRtTime: "16:25" })
+                @render timetableEntry({ name: "Penmaenmawr", crs: "PMW", arrivalTtTime: "16:28", arrivalWttTime: "16:27½", departureTtTime: "16:28", departureWttTime: "16:28½", arrivalRtTime: "16:28", departureRtTime: "16:30" })
+                @render timetableEntry({ name: "Conwy", crs: "CNW", arrivalTtTime: "16:34", arrivalWttTime: "16:34", departureTtTime: "16:35", departureWttTime: "16:35", arrivalRtTime: "16:35", departureRtTime: "16:37" })
+                @render timetableEntry({ name: "Llandudno Junction", crs: "LLJ", platform: "3", arrivalTtTime: "16:39", arrivalWttTime: "16:38", departureTtTime: "16:40", departureWttTime: "16:40", arrivalRtTime: "16:39", departureRtTime: "16:41" })
+                @render timetableEntry({ name: "Colwyn Bay", crs: "CWB", platform: "2", arrivalTtTime: "16:45", arrivalWttTime: "16:46", departureTtTime: "16:46", departureWttTime: "16:46½", arrivalRtTime: "16:46", departureRtTime: "16:47" })
+                @render timetableEntry({ name: "Llysfaen Emergency Gf", arrivalWttTime: "16:48½", pass: true })
+                @render timetableEntry({ name: "Abergele & Pensarn", crs: "AGL", platform: "1", arrivalTtTime: "16:51", arrivalWttTime: "16:51½", arrivalRtTime: "16:54" })
+                @render timetableEntry({ name: "Rhyl", crs: "RHL", platform: "1", arrivalTtTime: "16:45", arrivalWttTime: "16:45", departureTtTime: "16:57", departureWttTime: "16:57", arrivalRtTime: "16:57", departureRtTime: "16:59" })
+                @render timetableEntry({ name: "Rhyl Jn", arrivalWttTime: "16:58", pass: true, arrivalRtTime: "16:59" })
+                @render timetableEntry({ name: "Prestatyn", crs: "PRT", platform: "1", arrivalTtTime: "17:03", arrivalWttTime: "17:01½", departureTtTime: "17:03", departureWttTime: "17:03", arrivalRtTime: "17:04", departureRtTime: "17:17" })
+                @render timetableEntry({ name: "Mostyn West Jn", arrivalWttTime: "17:08½", pass: true, arrivalRtTime: "17:23" })
+                @render timetableEntry({ name: "Mostyn Signal Box", arrivalWttTime: "17:08½", pass: true, arrivalRtTime: "17:23" })
+                @render timetableEntry({ name: "Mostyn East Jn", arrivalWttTime: "17:09", pass: true, arrivalRtTime: "17:24" })
+                @render timetableEntry({ name: "Holywell Jn", arrivalWttTime: "17:11", pass: true, arrivalRtTime: "17:26" })
+                @render timetableEntry({ name: "Flint", crs: "FLN", platform: "1", arrivalTtTime: "17:16", arrivalWttTime: "17:15", departureTtTime: "17:16", departureWttTime: "17:16½", arrivalRtTime: "17:29", departureRtTime: "17:31" })
+                @render timetableEntry({ name: "Flint Jn", arrivalWttTime: "17:17½", pass: true, arrivalRtTime: "17:32" })
+                @render timetableEntry({ name: "Rockcliffe Hall", arrivalWttTime: "17:19", pass: true, arrivalRtTime: "17:34" })
+                @render timetableEntry({ name: "Shotton", crs: "SHT", platform: "1", arrivalTtTime: "17:20", arrivalWttTime: "17:20½", departureTtTime: "17:21", departureWttTime: "17:21", arrivalRtTime: "17:35", departureRtTime: "17:36" })
+                @render timetableEntry({ name: "Sandycroft", arrivalWttTime: "17:22½", pass: true, arrivalRtTime: "17:37" })
+                @render timetableEntry({ name: "Saltney Jn", arrivalWttTime: "17:26½", pass: true, arrivalRtTime: "17:42" })
+                @render timetableEntry({ name: "Roodee Jn", arrivalWttTime: "17:27½", pass: true, arrivalRtTime: "17:43" })
             </tbody>
         </table>
     </article>
@@ -283,6 +315,10 @@
             display: flex;
             flex-direction: column;
             gap: 1em;
+            
+            &.services {
+                gap: 0.25em;
+            }
         }
         
         .marker-definitions li {
@@ -293,19 +329,24 @@
         
         .tracking-codes {
             display: flex;
-            flex-direction: row;
-            gap: 2em;
-            row-gap: 1em;
+            flex-direction: column;
+            gap: 1em;
             
-            li {
+            ul {
                 display: flex;
-                flex-direction: column;
-                gap: 0;
+                flex-direction: row;
+                gap: 2em;
                 
-                font-weight: bold;
-                
-                & > * {
-                    font-weight: normal;
+                li {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 0;
+                    
+                    font-weight: bold;
+                    
+                    & > * {
+                        font-weight: normal;
+                    }
                 }
             }
         }
@@ -330,7 +371,7 @@
     }
     
     .marker-group {
-        gap: 0.25em;
+        gap: 0.25rem;
     }
     
     .marker-related {
@@ -515,6 +556,8 @@
         
         .platform {
             grid-column: platform;
+            
+            font-size: 0.8em;
         }
         
         .timetable-detail {
@@ -528,10 +571,13 @@
             grid-row: 2;
             grid-column: span 2;
             
-            text-transform: uppercase;
-            font-size: 0.6em;
-            font-weight: 600;
-            opacity: 0.6
+            font-size: 0.7em;
+            
+            & > p {
+                /* text-transform: uppercase; */
+                font-weight: 500;
+                opacity: 0.6
+            }
         }
     }
     
