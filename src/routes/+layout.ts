@@ -2,6 +2,7 @@ export async function load() {
   const tokens = {
     "bg": "FFFCFC",
     "fg": "340909",
+    "card-bg-light": "FDF6F1",
     "card-bg": "F8F0EA",
     "card-stroke": "EED4C0",
     
