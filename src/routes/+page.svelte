@@ -104,9 +104,9 @@
                 <tr>
                     <!-- Timetable -->
                     <th scope="col">Arrival</th>
-                    <th scope="col">WTT</th>
+                    <th scope="col" class="wtt">WTT</th>
                     <th scope="col">Departure</th>
-                    <th scope="col" class="timetable-border">WTT</th>
+                    <th scope="col" class="wtt timetable-border">WTT</th>
                     
                     <!-- Realtime -->
                     <th scope="col">Arrival</th>
@@ -114,36 +114,34 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
+                <tr class="timetable-entry-detail">
                     <!-- Location -->
                     <td>{@render marker("HHD", "marker-crs")}</td>
-                    <td>
-                        <div class="timetable-location">
-                            <p>
-                                Holyhead
-                            </p>
-                            <div class="timetable-extra">
-                                <div class="marker-related">
-                                    {@render marker("80x", "marker-load")}
-                                    {@render marker("125", "marker-load-alt", "on-marker-load")}
-                                </div>
-                                <p>
-                                    Pathed as a Class 80x at 125mph
-                                </p>
+                    <td class="timetable-location">
+                        <p>
+                            Holyhead
+                        </p>
+                        <div class="timetable-detail">
+                            <div class="marker-related">
+                                {@render marker("80x", "marker-load")}
+                                {@render marker("125", "marker-load-alt", "on-marker-load")}
                             </div>
+                            <p>
+                                Pathed as a Class 80x at 125mph
+                            </p>
                         </div>
                     </td>
-                    <td class="timetable-border">2</td>
+                    <td class="timetable-border platform">2</td>
                     
                     <!-- Timetable -->
-                    <td></td>
-                    <td></td>
-                    <td>15:36</td>
-                    <td class="timetable-border"></td>
+                    <td class="arrival time"></td>
+                    <td class="wtt time"></td>
+                    <td class="time">15:36</td>
+                    <td class="wtt time timetable-border">15:36</td>
                     
                     <!-- Realtime -->
-                    <td></td>
-                    <td class="timetable-border">15:36</td>
+                    <td class="time"></td>
+                    <td class="time timetable-border">15:36</td>
                     
                     <!-- Path/Line -->
                     <td></td>
@@ -156,6 +154,7 @@
 
 <style>
     /* Marker styles */
+    
     .marker {
         font-family: "Trusty Mono", monospace;
         font-weight: 700;
@@ -265,7 +264,7 @@
     
     /* Timetable styles */
     
-    /* Layout */
+    /* Border and padding */
     
     article {
         background: var(--card-bg);
@@ -279,57 +278,16 @@
         }
     }
     
-    table {
-        display: grid;
-        
-        grid-auto-rows: min-content;
-        grid-template-columns:
-            [crs] min-content
-            [location] auto
-            [platform] 1em
-            [tt-arrival] min-content
-            [tt-arrival-wtt] min-content
-            [tt-departure] min-content
-            [tt-departure-wtt] min-content
-            [rt-arrival] min-content
-            [rt-departure] min-content
-            [path] min-content
-            [line] min-content
-    }
-    
-    thead, tbody, tr {
-        display: grid;
-        
-        grid-auto-rows: min-content;
-        grid-column: 1 / -1;
-        grid-template-columns: subgrid;
-    }
-    
-    thead {
-        grid-template-rows: repeat(2, min-content);
-    }
-    
-    tr {
-        grid-template-rows: repeat(2, min-content);
-        grid-row: 1 / span 2;
-    }
-    
-    thead tr:first-child {
-        .crs, .location, .platform, .path, .line {
-            grid-row: 1 / span 2;
-        }
-        
-        .timetable {
-            grid-column: span 4;
-        }
-    }
-    
     table, td, th {
         border: 0 solid var(--card-stroke);
+        border-collapse: collapse;
     }
     
-    table, td {
-        border-collapse: collapse;
+    table {
+        border-top-width: 1px;
+    }
+    
+    td {
         border-top-width: 1px;
         border-bottom-width: 1px;
     }
@@ -337,14 +295,116 @@
     th, td {
         padding: 0.25em 0.5em;
         
-        
         &.timetable-border {
             border-right-width: 1px;
         }
     }
     
+    th {
+        font-weight: 500;
+        
+        &.timetable, &.realtime {
+            font-weight: 600;
+        }
+    }
+    
+    /* Give the first and last cells more padding, because we didn't add
+       it to the article element */
+    
     td:first-child, .timetable-header-start {
         padding-left: 1em;
+    }
+    
+    td:last-child, .timetable-header-end {
+        padding-right: 1em;
+    }
+    
+    /* Time styles */ 
+    
+    .time {
+        font-size: 0.8rem;
+        font-family: "Trusty Mono", monospace;
+        font-weight: 600;
+        
+        text-align: center;
+        
+        &.wtt {
+            font-weight: 300;
+        }
+    }
+    
+    th.wtt {
+        font-weight: 300;
+        text-align: right;
+    }
+    
+    /* Grid layout */
+    
+    table {
+        display: grid;
+        
+        grid-template-columns:
+            [crs] min-content
+            [location] auto
+            [platform] min-content
+            [tt-arrival] 4em
+            [tt-arrival-wtt] 4em
+            [tt-departure] 4em
+            [tt-departure-wtt] 4em
+            [rt-arrival] min-content
+            [rt-departure] min-content
+            [path] min-content
+            [line] min-content;
+    }
+    
+    thead, tbody, tr {
+        display: grid;
+        
+        grid-column: 1 / -1;
+        grid-template-columns: subgrid;
+    }
+    
+    thead {
+        font-size: 0.8rem;
+        
+        grid-template-rows: repeat(2, calc(1lh + 0.5rem));
+    }
+    
+    tr {
+        grid-template-rows: subgrid;
+    }
+    
+    thead tr:first-child {
+        grid-row: 1 / span 2;
+        
+        .crs, .location, .platform, .path, .line {
+            display: flex;
+            flex-direction: column;
+            justify-content: end;
+            
+            grid-row: 1 / span 2;
+        }
+        
+        .path {
+            grid-column: path;
+        }
+        
+        .line {
+            grid-column: line;
+        }
+        
+        .timetable {
+            grid-column: span 4;
+        }
+        
+        .realtime {
+            grid-column: span 2;
+        }
+    }
+    
+    thead tr:last-child {
+        grid-column: 4 / -1;
+        grid-row: 2 / span 1;
     }
     
     th {
@@ -354,19 +414,44 @@
     
     /* Detail */ 
     
-    .timetable-extra {
-        font-size: 0.8em;
+    tbody .platform {
+        text-align: right;
+    }
+    
+    .timetable-entry-detail {
+        grid-row: span 2;
+        grid-row: repeat(2, min-content);
         
-        display: flex;
-        flex-direction: row;
-        gap: 0.25em;
+        & > * {
+            grid-row: 1;
+        }
+        
+        .platform {
+            grid-column: platform;
+        }
+        
+        .timetable-detail {
+            display: flex;
+            flex-direction: row;
+            gap: 0.25em;
+            
+            padding-top: 0.25rem;
+            
+            grid-row: 2;
+            grid-column: span 2;
+            
+            font-size: 0.8em;
+        }
     }
     
     .timetable-location {
-        display: flex;
-        flex-direction: column;
-        gap: 0.25em;
+        display: grid;
         
-        column-span: 2;
+        grid-column: 2 / span 2;
+        grid-template-columns: subgrid;
+        
+        & > p {
+            font-weight: 500;
+        }
     }
 </style>
