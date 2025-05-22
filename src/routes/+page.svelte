@@ -106,13 +106,13 @@
                 </tr>
                 <tr>
                     <!-- Timetable -->
-                    <th scope="col">Arrival</th>
-                    <th scope="col" class="wtt">WTT</th>
+                    <th scope="col" class="arrival-tt">Arrival</th>
+                    <th scope="col" class="arrival-wtt wtt">WTT</th>
                     <th scope="col" class="departure-tt">Departure</th>
                     <th scope="col" class="departure-wtt wtt timetable-border">WTT</th>
                     
                     <!-- Realtime -->
-                    <th scope="col">Arrival</th>
+                    <th scope="col" class="arrival-rt">Arrival</th>
                     <th scope="col" class="departure departure-rt timetable-border">Departure</th>
                 </tr>
             </thead>
@@ -591,13 +591,41 @@
                 [platform] min-content
                 [tt] 4em
                 [tt-wtt] 4em
-                [rt] 4em
+                [rt] 6em
                 [path] min-content
                 [line] min-content;
         }
         
         thead {
             grid-template-rows: repeat(3, calc(1lh + 0.5rem));
+            
+            tr:first-child {
+                grid-row: 1 / span 3;
+                
+                .crs, .location, .platform, .path, .line {
+                    grid-row: 3;
+                }
+                
+                .timetable {
+                    grid-column: span 2;
+                }
+                
+                .realtime {
+                    grid-column: span 1;
+                }
+            }
+            
+            tr:last-child {
+                grid-row: 2 / span 2;
+                
+                & > * {
+                    grid-row: 3;
+                }
+                
+                .departure-rt {
+                    justify-content: start;
+                }
+            }
         }
     }
     
