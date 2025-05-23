@@ -518,12 +518,12 @@
             [crs] min-content
             [location] auto
             [platform] min-content
-            [tt-arrival] 4em
-            [tt-arrival-wtt] 4em
-            [tt-departure] 4em
-            [tt-departure-wtt] 4em
-            [rt-arrival] 4em
-            [rt-departure] 4em
+            [tt-arrival] 4rem
+            [tt-arrival-wtt] 4rem
+            [tt-departure] 4rem
+            [tt-departure-wtt] 4rem
+            [rt-arrival] 4rem
+            [rt-departure] 4rem
             [path] min-content
             [line] min-content;
     }
@@ -547,11 +547,7 @@
         grid-row: 1 / span 2;
         
         .crs, .location, .platform, .path, .line {
-            display: flex;
-            flex-direction: column;
-            justify-content: end;
-            
-            grid-row: 1 / span 2;
+            grid-row: 2 / span 1;
         }
         
         .path {
@@ -563,7 +559,7 @@
         }
         
         .timetable {
-            grid-column: span 4;
+            grid-column: 4 / span 4;
         }
         
         .realtime {
@@ -598,10 +594,10 @@
             grid-template-columns:
                 [crs] min-content
                 [location] auto
-                [platform] min-content
-                [tt] 4em
-                [tt-wtt] 3em
-                [rt] 6em
+                [platform] 2rem
+                [tt] 4rem
+                [tt-wtt] 3rem
+                [rt] 6rem
                 [path] min-content
                 [line] min-content;
         }
@@ -614,6 +610,12 @@
                 
                 .crs, .location, .platform, .path, .line {
                     grid-row: 3;
+                }
+                
+                .platform {
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: right;
                 }
                 
                 .timetable {
