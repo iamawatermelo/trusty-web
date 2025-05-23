@@ -589,7 +589,7 @@
         
         Wish me luck. */
     
-    @container main (max-width: 64rem) {
+    @container main (max-width: 32rem) {
         table {
             grid-template-columns:
                 [crs] min-content
@@ -616,6 +616,15 @@
                     display: flex;
                     flex-direction: row;
                     justify-content: right;
+                    
+                    /* There's a gap in the outline above the platform
+                       indicator. Use ::after to fix this. */
+                    
+                    &::after {
+                        grid: 3 / 1;
+                        
+                        border-right: 1px solid var(--card-stroke);
+                    }
                 }
                 
                 .timetable {
@@ -687,7 +696,7 @@
            free up space for mobile users. This may cause accessibility
            issues. */
         
-        @container main (max-width: 64em) {
+        @container main (max-width: 32em) {
             table {
                 font-size: 0.75rem;
             }
