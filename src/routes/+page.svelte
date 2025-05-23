@@ -523,9 +523,7 @@
             [tt-departure] 4rem
             [tt-departure-wtt] 4rem
             [rt-arrival] 4rem
-            [rt-departure] 4rem
-            [path] min-content
-            [line] min-content;
+            [rt-departure] 4rem;
     }
     
     thead, tbody, tr {
@@ -546,8 +544,24 @@
     thead tr:first-child {
         grid-row: 1 / span 2;
         
-        .crs, .location, .platform, .path, .line {
+        /* There's a gap in the outline above the platform
+           indicator. Use ::after to fix this. */
+        
+        &::before {
+            content: "";
+            display: block;
+            
+            grid-area: 1 / 3;
+            
+            border-right: 1px solid var(--card-stroke);
+        }
+        
+        .crs, .location, .platform {
             grid-row: 2 / span 1;
+        }
+        
+        .path, .line {
+            display: none;
         }
         
         .path {
@@ -608,6 +622,12 @@
             tr:first-child {
                 grid-row: 1 / span 3;
                 
+                /* Patch more gaps in the outline... */
+                
+                &::before {
+                    grid-area: 1 / 3 / span 2 / span 1;
+                }
+                
                 .crs, .location, .platform, .path, .line {
                     grid-row: 3;
                 }
@@ -616,15 +636,6 @@
                     display: flex;
                     flex-direction: row;
                     justify-content: right;
-                    
-                    /* There's a gap in the outline above the platform
-                       indicator. Use ::after to fix this. */
-                    
-                    &::after {
-                        grid: 3 / 1;
-                        
-                        border-right: 1px solid var(--card-stroke);
-                    }
                 }
                 
                 .timetable {
@@ -649,6 +660,10 @@
                 
                 .departure-rt {
                     justify-content: start;
+                }
+                
+                .arrival-wtt, .arrival-rt {
+                    border-right: 1px solid var(--card-stroke);
                 }
             }
         }
