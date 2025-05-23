@@ -136,7 +136,8 @@
                     <!-- Location -->
                     <td>
                         {#if props.crs}
-                            {@render marker(props.crs, "marker-crs")}
+                            <!-- I'm not using marker here because this should be read out by screen readers -->
+                            <span class="marker crs" style:background="var(--marker-crs)" style:color="var(--on-marker-crs)">{props.crs}</span>
                         {/if}
                     </td>
                     <td class="timetable-location">
@@ -433,6 +434,8 @@
     
     table {
         border-top-width: 1px;
+        
+        font-size: 0.8em;
     }
     
     td {
@@ -464,16 +467,25 @@
     
     td:first-child, .timetable-header-start {
         padding-left: 1em;
+        padding-right: 0;
     }
     
     td:last-child, .timetable-header-end {
         padding-right: 1em;
+        padding-left: 0;
+    }
+    
+    /* Also align the CRS */
+    
+    td:first-child {
+        display: flex;
+        flex-direction: column;
+        justify-content: start;
     }
     
     /* Time styles */ 
     
     .time {
-        font-size: 0.8rem;
         font-family: "Trusty Mono", monospace;
         font-weight: 600;
         
@@ -524,8 +536,6 @@
     }
     
     thead {
-        font-size: 0.8rem;
-        
         grid-template-rows: repeat(2, calc(1lh + 0.5rem));
     }
     
@@ -590,7 +600,7 @@
                 [location] auto
                 [platform] min-content
                 [tt] 4em
-                [tt-wtt] 4em
+                [tt-wtt] 3em
                 [rt] 6em
                 [path] min-content
                 [line] min-content;
@@ -607,11 +617,11 @@
                 }
                 
                 .timetable {
-                    grid-column: span 2;
+                    grid-column: 4 / span 2;
                 }
                 
                 .realtime {
-                    grid-column: span 1;
+                    grid-column: 6 / span 1;
                 }
             }
             
@@ -620,6 +630,10 @@
                 
                 & > * {
                     grid-row: 3;
+                }
+                
+                .arrival-tt, .arrival-wtt, .arrival-rt {
+                    grid-row: 1;
                 }
                 
                 .departure-rt {
@@ -645,8 +659,6 @@
         
         .platform {
             grid-column: platform;
-            
-            font-size: 0.8em;
         }
         
         .timetable-detail {
@@ -660,12 +672,27 @@
             grid-row: 2;
             grid-column: span 2;
             
-            font-size: 0.7em;
+            font-size: 0.7rem;
             
             & > p {
                 /* text-transform: uppercase; */
                 font-weight: 500;
                 opacity: 0.6
+            }
+        }
+        
+        /* Shrink the font even more when the container is small to 
+           free up space for mobile users. This may cause accessibility
+           issues. */
+        
+        @container main (max-width: 64em) {
+            table {
+                font-size: 0.75rem;
+            }
+            
+            .crs {
+                font-size: 0.7rem;
+                font-weight: 600;
             }
         }
     }
@@ -677,7 +704,6 @@
         grid-template-columns: subgrid;
         
         & > p {
-            font-size: 0.8em;
             font-weight: 500;
         }
     }
